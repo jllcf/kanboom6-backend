@@ -20,21 +20,21 @@ app.use((req, res, next) => {
 
 
 //Enviar dados 
-app.post("/users", async(req, res) => {
+app.post("/users", async (req, res) => {
     var dados = req.body;
     dados.password = await bcrypt.hash(dados.password, 8);
     await usuarios.create(dados)
-    .then(() => {
-        return res.json({
-            erro: false,
-            mensagem: "Usuário cadastrado com sucesso!"
+        .then(() => {
+            return res.json({
+                erro: false,
+                mensagem: "Usuário cadastrado com sucesso! Obrigado"
+            });
+        }).catch(() => {
+            return res.status(400).json({
+                erro: true,
+                mensagem: "Erro: Cadastro não realizado"
+            });
         });
-    }).catch(() => {
-        return res.status(400).json({
-            erro: true,
-            mensagem: "Erro: Cadastro não realizado"
-        });
-    });
 });
 
 
@@ -43,18 +43,18 @@ app.post("/users", async(req, res) => {
 app.put("/users", async (req, res) => {
     const { id, email, password } = req.body;
 
-    await usuarios.update(req.body, {where: {id, email, password}})
-    .then(() => {
-        return res.json({
-            erro: false,
-            mensagem: "Usuário editado com sucesso!"
+    await usuarios.update(req.body, { where: { id, email, password } })
+        .then(() => {
+            return res.json({
+                erro: false,
+                mensagem: "Usuário editado com sucesso!"
+            });
+        }).catch(() => {
+            return res.status(400).json({
+                erro: true,
+                mensagem: "Erro ao editar. Tente novamente."
+            });
         });
-    }).catch(() => {
-        return res.status(400).json({
-            erro: true,
-            mensagem: "Erro ao editar. Tente novamente."
-        });
-    });
     return res.json({
         erro: false,
         id,
@@ -67,23 +67,23 @@ app.put("/users", async (req, res) => {
 app.delete("/users/:id", async (req, res) => {
     const { id, email, password } = req.params;
 
-    await user.destroy({ where:{ id } })
-    .then(() => {
-        return res.status.json({
-            erro: false,
-        mensagem: "Registro apagado com sucesso"
+    await user.destroy({ where: { id } })
+        .then(() => {
+            return res.status.json({
+                erro: false,
+                mensagem: "Registro apagado com sucesso"
+            });
+        }).catch(() => {
+            return res.status(400).json({
+                erro: true,
+                mensagem: "Erro. Status(400)"
+            });
         });
-    }).catch(() => {
-        return res.status(400).json({
-            erro: true,
-            mensagem: "Erro. Status(400)"
-        });
-    });
     return res.json({
         erro: false,
         id,
         email:
-        password, 
+            password,
     });
 });
 
@@ -91,18 +91,18 @@ app.delete("/users/:id", async (req, res) => {
 app.put("/users-senha", async (req, res) => {
     const { id, password } = req.body;
     var passwordCrypt = await bcrypt.hash(password, 8);
-    await usuarios.update({passwordCrypt}, {where: {id}})
-    .then(() => {
-        return res.json({
-            erro: false,
-            mensagem: "Senha editada com sucesso"
+    await usuarios.update({ passwordCrypt }, { where: { id } })
+        .then(() => {
+            return res.json({
+                erro: false,
+                mensagem: "Senha editada com sucesso"
+            });
+        }).catch(() => {
+            return res.status(400).json({
+                erro: true,
+                mensagem: "Erro: status(400)"
+            });
         });
-    }).catch(() => {
-        return res.status(400).json({
-            erro: true,
-            mensagem: "Erro: status(400)"
-        });
-    });
     return res.json({
         erro: false,
         id,
@@ -114,22 +114,23 @@ app.put("/users-senha", async (req, res) => {
 
 app.post('/users', async (req, res) => {
     const user = await user.findOne({
-        attributes: ['id', 'email', 'password'], 
-        where: {email: req.body}});
-    if(user === null){
+        attributes: ['id', 'email', 'password'],
+        where: { email: req.body }
+    });
+    if (user === null) {
         return res.status(400).json({
             erro: true,
-            mensagem:"Erro: Usuário não cadastrado."
+            mensagem: "Erro: Usuário não cadastrado."
         });
     };
-    if(!(await bcrypt.compare(req.body.password, user.password))){
+    if (!(await bcrypt.compare(req.body.password, user.password))) {
         return res.status(400).json({
             erro: true,
             mensagem: "Senha inválida"
         });
     };
 
-    var token = jwt.sign({id: user.id}, process.env.SECRET,  {
+    var token = jwt.sign({ id: user.id }, process.env.SECRET, {
         //expiresIn: '7d' expira em 7 dias
         expiresIn: 1800 //30 minutos
     });
