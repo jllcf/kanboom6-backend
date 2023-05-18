@@ -1,4 +1,11 @@
 const pg = require("pg");
+const Sequelize = require("sequelize");
+const sequelize = new Sequelize("users", "root", "postgres", {
+  dialect: "pg",
+  host: "PG_HOST",
+  port: "PG_PORT",
+});
+
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -9,4 +16,4 @@ const config = `postgresql://${process.env.PG_USERNAME}:${process.env.PG_PASSWOR
 
 const pool = new Pool({ connectionString: config });
 
-module.exports = pool;
+(module.exports = pool), (module.exports = sequelize);
