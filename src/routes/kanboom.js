@@ -1,28 +1,25 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../database/database");
+const pool = require("../config/database");
 const { object, string } = require("yup");
 
 router.use(express.json());
 
 router.post("/users", async (req, res) => {
   const schema = object({
-    user_name: string().required(),
-    user_email: string().email(),
-    user_password: string().min(6),
+    user_name: string().required("Nome de usuário é obrigatório."),
+    user_email: string().email("Email é obrigatório."),
+    user_password: string().min(6, "Senha precisa conter 6 ou mais caracteres."),
   });
 
-  if (!(await schema.isValid(req.body))) {
+  try {
+    const validation = await schema.validate(req.body);
+  } catch (error) {
     return res.status(400).json({
       erro: true,
-      mensagem: "Erro: Necessário preencher todos os campos do formulário",
+      mensagem: error.message,
     });
   }
-
-  return res.json({
-    erro: false,
-    mensagem: "Dados validádos",
-  });
 });
 //const { user_name, user_email, user_password } = req.body;
 //console.log(user_name, user_email, user_password);
