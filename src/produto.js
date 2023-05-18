@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
-const database = require("../database/database");
+const dbConnect = require("./config/database");
 
-const users = database.define("users", {
+const Users = database.define("users", {
   nome: {
     type: Sequelize.STRING,
     autoIncrement: true,
@@ -19,3 +19,5 @@ const users = database.define("users", {
     allowNull: false,
   },
 });
+
+module.exports = { Users };
