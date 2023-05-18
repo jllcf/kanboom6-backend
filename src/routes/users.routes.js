@@ -4,6 +4,6 @@ const router = express.Router();
 
 router.use(express.json());
 
-router.post("/users", usersController.create_user);
+router.post("/", usersController.create_user);
 
 module.exports = router;
