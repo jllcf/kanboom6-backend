@@ -4,7 +4,10 @@ const Login = require("../models/login");
 const login_check = async (req, res) => {
   const schema = object({
     user_email: string().email("Email é obrigatório."),
-    user_password: string().min(6, "Senha precisa conter 6 ou mais caracteres."),
+    user_password: string().min(
+      6,
+      "Senha precisa conter 6 ou mais caracteres."
+    ),
   });
 
   try {
@@ -16,7 +19,7 @@ const login_check = async (req, res) => {
     });
   }
 
-  const checkUser = await User.read(req.body);
+  const checkUser = await Login.getTableName(req.body);
   return res.status(200).json({ message: "Login efetuado com sucesso." });
 };
 

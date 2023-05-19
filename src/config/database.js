@@ -1,7 +1,15 @@
 const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize(
-  `postgresql://${process.env.PG_USERNAME}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_DATABASE}`
+  `postgres://userkanboom:Ohghp9n22HEIIexHmUZup8DlcbXvVoiJ@dpg-chimnsu4dad01anfcvug-a.oregon-postgres.render.com/dbkanboom`,
+  {
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+  }
 );
 
 const testConnection = async () => {
@@ -14,10 +22,10 @@ const testConnection = async () => {
 };
 
 // Dropa a tabela?
-/* const syncWithDB = async () => {
-  await sequelize.sync({ force: true });
-}; */
-
+//const syncWithDB = async () => {
+//  await sequelize.sync({ force: true });
+//};
+//
 testConnection();
 //syncWithDB();
 

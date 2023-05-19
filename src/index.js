@@ -11,7 +11,7 @@ const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
 app.use(express.json());
 app.use(cors());
 app.use("/api/users", require("./routes/users.routes"));
-//app.use("/api/login", require("./routes/login.routes"));
+app.use("/api/login", require("./routes/login.routes"));
 
 app.listen(port, function () {
   console.log(
