@@ -1,24 +1,14 @@
-const { object, string } = require("yup");
+const userSchemas = require("../schemas/userSchemas");
 
-const newUserValidation = async (req, res, next) => {
-  const schema = object({
-    user_name: string().required("Nome de usuário é obrigatório."),
-    user_email: string().email("Email inválido."),
-    user_password: string().min(6, "Senha precisa conter 6 ou mais caracteres."),
-  });
-
-  let errorMessage;
-
-  try {
-    const validation = await schema.validate(req.body, { abortEarly: false });
-    next();
-  } catch (error) {
-    errorMessage = {
-      type: "error",
-      message: error.errors,
-    };
-    return res.status(400).json(errorMessage);
-  }
+const userValidation = (schema) => {
+  return async (req, res, next) => {
+    try {
+      const validation = await userSchemas[schema].validate(req.body, { abortEarly: false });
+      next();
+    } catch (error) {
+      return res.status(400).json({ type: "error", message: error.errors });
+    }
+  };
 };
 
-module.exports = { newUserValidation };
+module.exports = { userValidation };
