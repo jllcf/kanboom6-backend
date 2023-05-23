@@ -1,14 +1,14 @@
-const User = require("../models/user");
+const userRepository = require("../repositories/userRepository");
 
 const verifyUserInformation = async (userData) => {
   const errorArray = [];
 
-  const verifyExistentUsername = await User.findOne({ where: { user_name: userData.user_name } });
+  const verifyExistentUsername = await userRepository.searchUser("user_name", userData.user_name);
   if (verifyExistentUsername !== null) {
     errorArray.push("Nome de usuário já cadastrado.");
   }
 
-  const verifyExistentEmail = await User.findOne({ where: { user_email: userData.user_email } });
+  const verifyExistentEmail = await userRepository.searchUser("user_email", userData.user_email);
   if (verifyExistentEmail !== null) {
     errorArray.push("Email já cadastrado.");
   }
