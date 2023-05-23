@@ -1,4 +1,4 @@
-const { createNewUser } = require("../repositories/createNewUser");
+const userRepository = require("../repositories/userRepository");
 const { verifyUserInformation } = require("../services/verifyUserInformation");
 
 const create_user = async (req, res) => {
@@ -9,8 +9,8 @@ const create_user = async (req, res) => {
     return res.status(400).json(verifyNewUserInfo);
   }
 
-  const serverResponse = await createNewUser(newUserData);
-  return res.status(serverResponse.type === "error" ? 400 : 200).json(serverResponse);
+  const createUser = await userRepository.createUser(newUserData);
+  return res.status(createUser.type === "error" ? 400 : 200).json(createUser);
 };
 
 module.exports = { create_user };
