@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize(
-  `postgres://userkanboom:Ohghp9n22HEIIexHmUZup8DlcbXvVoiJ@dpg-chimnsu4dad01anfcvug-a.oregon-postgres.render.com/dbkanboom`,
+  `postgres://${process.env.PG_USERNAME}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}/${process.env.PG_DATABASE}`,
   {
     dialectOptions: {
       ssl: {
