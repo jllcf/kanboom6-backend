@@ -13,20 +13,4 @@ const createBcryptHash = (req, res, next) => {
   });
 };
 
-/* const senhaFornecida = "minhaSenha";
-const hashArmazenado = "hashPrevio"; // Hash previamente armazenado no banco de dados
-
-bcrypt.compare(senhaFornecida, hashArmazenado, function (err, result) {
-  if (err) {
-    console.error(err);
-    return;
-  }
-
-  if (result) {
-    console.log("Senha correta!");
-  } else {
-    console.log("Senha incorreta!");
-  }
-}); */
-
 module.exports = { createBcryptHash };
