@@ -1,24 +1,16 @@
-const { object, string } = require("yup");
-const User = require("../models/user");
+const { createNewUser } = require("../repositories/createNewUser");
+const { verifyUserInformation } = require("../services/verifyUserInformation");
 
 const create_user = async (req, res) => {
-  const schema = object({
-    user_name: string().required("Nome de usuário é obrigatório."),
-    user_email: string().email("Email é obrigatório."),
-    user_password: string().min(6, "Senha precisa conter 6 ou mais caracteres."),
-  });
+  const newUserData = req.body;
+  const verifyNewUserInfo = await verifyUserInformation(newUserData);
 
-  try {
-    const validation = await schema.validate(req.body, { abortEarly: false });
-  } catch (error) {
-    return res.status(400).json({
-      erro: true,
-      mensagem: error.errors,
-    });
+  if (verifyNewUserInfo.type === "error") {
+    return res.status(400).json(verifyNewUserInfo);
   }
 
-  const newUser = await User.create(req.body);
-  return res.status(200).json({ message: "Usuário inserido com sucesso." });
+  const serverResponse = await createNewUser(newUserData);
+  return res.status(serverResponse.type === "error" ? 400 : 200).json(serverResponse);
 };
 
 module.exports = { create_user };
