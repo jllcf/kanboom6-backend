@@ -16,6 +16,6 @@
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "start": "nodemon --exec node index.js"
+    "start": "node ./src/index.js"
   }
 }
