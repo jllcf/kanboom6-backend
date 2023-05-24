@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 require('dotenv').config();
 
-module.exports =  {
+ module.exports =  {
     aAdmin: async function(req, res, next){
         //return res.json({mensagem: "Validar token"});
         const autHeader = req.headers.authorization;
