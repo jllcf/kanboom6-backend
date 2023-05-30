@@ -1,16 +1,21 @@
 const userRepository = require("../repositories/userRepository");
 const { verifyUserInformation } = require("../services/verifyUserInformation");
+const { generalError, generalSuccess } = require("../../utils/responses");
+const { responseMessages } = require("../../utils/constants");
 
 const create_user = async (req, res) => {
   const newUserData = req.body;
   const verifyNewUserInfo = await verifyUserInformation(newUserData);
 
   if (verifyNewUserInfo.type === "error") {
-    return res.status(400).json(verifyNewUserInfo);
+    return generalError(res, verifyNewUserInfo.message);
   }
-
-  const createUser = await userRepository.createUser(newUserData);
-  return res.status(createUser.type === "error" ? 400 : 200).json(createUser);
+  try {
+    await userRepository.createUser(newUserData);
+    generalSuccess(res, responseMessages.signup.success);
+  } catch (error) {
+    generalError(res, responseMessages.signup.error);
+  }
 };
 
 module.exports = { create_user };

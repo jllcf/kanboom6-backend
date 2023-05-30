@@ -1,13 +1,15 @@
+const { responseMessages } = require("../../utils/constants");
+const { loginSuccess, authError } = require("../../utils/responses");
 const { loginService } = require("../services/loginService");
 
 const login_check = async (req, res) => {
-  const login = await loginService(req.body);
+  const token = await loginService(req.body);
 
-  if (!login) {
-    return res.status(401).json({ message: "Email ou senha incorretos.", type: "error" });
+  if (!token) {
+    return authError(res, responseMessages.login.error);
   }
 
-  return res.status(200).json({ message: "Login efetuado.", type: "success", token: login });
+  return loginSuccess(res, responseMessages.login.success, token);
 };
 
 module.exports = { login_check };
