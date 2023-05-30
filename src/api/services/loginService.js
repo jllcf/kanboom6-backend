@@ -15,8 +15,7 @@ const loginService = async (userData) => {
       return passwordMatch;
     }
 
-    const jwt = jwtGenerator({ user_name: userData.user_name });
-    return jwt;
+    return jwtGenerator({ user_name: userData.user_name });
   } catch (error) {
     console.error(err);
   }

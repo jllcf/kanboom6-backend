@@ -21,12 +21,6 @@ const testConnection = async () => {
   }
 };
 
-// Dropa a tabela?
-//const syncWithDB = async () => {
-//  await sequelize.sync({ force: true });
-//};
-//
 testConnection();
-//syncWithDB();
 
 module.exports = sequelize;

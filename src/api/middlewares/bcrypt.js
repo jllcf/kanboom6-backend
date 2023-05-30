@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const saltRounds = 10;
 
-const createBcryptHash = (req, res, next) => {
+const createBcryptHash = (req, _, next) => {
   const { user_password } = req.body;
   bcrypt.hash(user_password, saltRounds, function (err, hash) {
     if (err) {
