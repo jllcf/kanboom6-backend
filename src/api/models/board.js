@@ -1,21 +1,26 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
-const Board = require("./board");
+const User = require("./user");
 
-const User = sequelize.define("user", {
-  user_name: {
-    type: DataTypes.STRING,
+const Board = sequelize.define("board", {
+  board_id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     allowNull: false,
     primaryKey: true,
   },
-  user_email: {
+  board_name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  user_password: {
+  user_name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
 });
 
-module.exports = User;
+Board.belongsTo(User, {
+  foreignKey: "user_name",
+});
+
+module.exports = Board;
